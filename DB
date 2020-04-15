@@ -1,0 +1,520 @@
+-- --------------------------------------------------------
+-- Hostitel:                     localhost
+-- Verze serveru:                5.7.24 - MySQL Community Server (GPL)
+-- OS serveru:                   Win64
+-- HeidiSQL Verze:               10.2.0.5599
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+
+-- Exportování struktury databáze pro
+DROP DATABASE IF EXISTS `thesis`;
+CREATE DATABASE IF NOT EXISTS `thesis` /*!40100 DEFAULT CHARACTER SET latin7 COLLATE latin7_general_cs */;
+USE `thesis`;
+
+-- Exportování struktury pro tabulka thesis.cas
+DROP TABLE IF EXISTS `cas`;
+CREATE TABLE IF NOT EXISTS `cas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `den_id` int(11) NOT NULL,
+  `predmet_id` int(11) NOT NULL,
+  `ucitel_id` int(11) NOT NULL,
+  `trida_id` int(11) NOT NULL,
+  `ucebna_id` int(11) NOT NULL,
+  `doba_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_3AD60B318C88C0` (`den_id`),
+  KEY `IDX_3AD60BB4810FC4` (`predmet_id`),
+  KEY `IDX_3AD60B35E6DF29` (`ucitel_id`),
+  KEY `IDX_3AD60B6F1C825A` (`trida_id`),
+  KEY `IDX_3AD60BA273BD17` (`ucebna_id`),
+  KEY `IDX_3AD60BE25FA26E` (`doba_id`),
+  CONSTRAINT `FK_3AD60B318C88C0` FOREIGN KEY (`den_id`) REFERENCES `den` (`id`),
+  CONSTRAINT `FK_3AD60B35E6DF29` FOREIGN KEY (`ucitel_id`) REFERENCES `ucitele` (`id`),
+  CONSTRAINT `FK_3AD60B6F1C825A` FOREIGN KEY (`trida_id`) REFERENCES `trida` (`id`),
+  CONSTRAINT `FK_3AD60BA273BD17` FOREIGN KEY (`ucebna_id`) REFERENCES `ucebna` (`id`),
+  CONSTRAINT `FK_3AD60BB4810FC4` FOREIGN KEY (`predmet_id`) REFERENCES `predmet` (`id`),
+  CONSTRAINT `FK_3AD60BE25FA26E` FOREIGN KEY (`doba_id`) REFERENCES `doba` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Exportování dat pro tabulku thesis.cas: ~5 rows (přibližně)
+DELETE FROM `cas`;
+/*!40000 ALTER TABLE `cas` DISABLE KEYS */;
+INSERT INTO `cas` (`id`, `den_id`, `predmet_id`, `ucitel_id`, `trida_id`, `ucebna_id`, `doba_id`) VALUES
+	(1, 1, 1, 11, 4, 1, 1),
+	(2, 1, 2, 14, 1, 3, 1),
+	(3, 1, 1, 16, 1, 1, 2),
+	(4, 1, 4, 11, 1, 1, 4),
+	(5, 1, 4, 11, 4, 1, 4);
+/*!40000 ALTER TABLE `cas` ENABLE KEYS */;
+
+-- Exportování struktury pro tabulka thesis.den
+DROP TABLE IF EXISTS `den`;
+CREATE TABLE IF NOT EXISTS `den` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `den` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Exportování dat pro tabulku thesis.den: ~5 rows (přibližně)
+DELETE FROM `den`;
+/*!40000 ALTER TABLE `den` DISABLE KEYS */;
+INSERT INTO `den` (`id`, `den`) VALUES
+	(1, 'Pondělí'),
+	(2, 'Úterý'),
+	(3, 'Středa'),
+	(4, 'Čtvrtek'),
+	(5, 'Pátek');
+/*!40000 ALTER TABLE `den` ENABLE KEYS */;
+
+-- Exportování struktury pro tabulka thesis.doba
+DROP TABLE IF EXISTS `doba`;
+CREATE TABLE IF NOT EXISTS `doba` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `doba` time NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Exportování dat pro tabulku thesis.doba: ~8 rows (přibližně)
+DELETE FROM `doba`;
+/*!40000 ALTER TABLE `doba` DISABLE KEYS */;
+INSERT INTO `doba` (`id`, `doba`) VALUES
+	(1, '08:00:00'),
+	(2, '08:55:00'),
+	(3, '10:00:00'),
+	(4, '10:55:00'),
+	(5, '11:50:00'),
+	(6, '12:45:00'),
+	(7, '13:35:00'),
+	(8, '14:25:00'),
+	(9, '15:15:00');
+/*!40000 ALTER TABLE `doba` ENABLE KEYS */;
+
+-- Exportování struktury pro tabulka thesis.historie
+DROP TABLE IF EXISTS `historie`;
+CREATE TABLE IF NOT EXISTS `historie` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rok` smallint(6) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Exportování dat pro tabulku thesis.historie: ~21 rows (přibližně)
+DELETE FROM `historie`;
+/*!40000 ALTER TABLE `historie` DISABLE KEYS */;
+INSERT INTO `historie` (`id`, `rok`) VALUES
+	(1, 2020),
+	(4, 2019),
+	(5, 2018),
+	(6, 2017),
+	(7, 2016),
+	(8, 2015),
+	(9, 2014),
+	(10, 2013),
+	(11, 2012),
+	(12, 2011),
+	(13, 2010),
+	(14, 2009),
+	(15, 2008),
+	(16, 2007),
+	(17, 2006),
+	(18, 2005),
+	(19, 2004),
+	(20, 2003),
+	(21, 2002),
+	(22, 2001),
+	(23, 2000);
+/*!40000 ALTER TABLE `historie` ENABLE KEYS */;
+
+-- Exportování struktury pro tabulka thesis.historie_trida
+DROP TABLE IF EXISTS `historie_trida`;
+CREATE TABLE IF NOT EXISTS `historie_trida` (
+  `historie_id` int(11) NOT NULL,
+  `trida_id` int(11) NOT NULL,
+  PRIMARY KEY (`historie_id`,`trida_id`),
+  KEY `IDX_5E7BBD9F779817B8` (`historie_id`),
+  KEY `IDX_5E7BBD9F6F1C825A` (`trida_id`),
+  CONSTRAINT `FK_5E7BBD9F6F1C825A` FOREIGN KEY (`trida_id`) REFERENCES `trida` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_5E7BBD9F779817B8` FOREIGN KEY (`historie_id`) REFERENCES `historie` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Exportování dat pro tabulku thesis.historie_trida: ~4 rows (přibližně)
+DELETE FROM `historie_trida`;
+/*!40000 ALTER TABLE `historie_trida` DISABLE KEYS */;
+INSERT INTO `historie_trida` (`historie_id`, `trida_id`) VALUES
+	(1, 1),
+	(1, 10),
+	(4, 7),
+	(5, 4),
+	(6, 1);
+/*!40000 ALTER TABLE `historie_trida` ENABLE KEYS */;
+
+-- Exportování struktury pro tabulka thesis.historie_zak
+DROP TABLE IF EXISTS `historie_zak`;
+CREATE TABLE IF NOT EXISTS `historie_zak` (
+  `historie_id` int(11) NOT NULL,
+  `zak_id` int(11) NOT NULL,
+  PRIMARY KEY (`historie_id`,`zak_id`),
+  KEY `IDX_AEB81D98779817B8` (`historie_id`),
+  KEY `IDX_AEB81D98CA0EBDD9` (`zak_id`),
+  CONSTRAINT `FK_AEB81D98779817B8` FOREIGN KEY (`historie_id`) REFERENCES `historie` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_AEB81D98CA0EBDD9` FOREIGN KEY (`zak_id`) REFERENCES `zak` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Exportování dat pro tabulku thesis.historie_zak: ~4 rows (přibližně)
+DELETE FROM `historie_zak`;
+/*!40000 ALTER TABLE `historie_zak` DISABLE KEYS */;
+INSERT INTO `historie_zak` (`historie_id`, `zak_id`) VALUES
+	(1, 1),
+	(1, 2),
+	(4, 2),
+	(5, 2),
+	(6, 2);
+/*!40000 ALTER TABLE `historie_zak` ENABLE KEYS */;
+
+-- Exportování struktury pro tabulka thesis.migration_versions
+DROP TABLE IF EXISTS `migration_versions`;
+CREATE TABLE IF NOT EXISTS `migration_versions` (
+  `version` varchar(14) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `executed_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
+  PRIMARY KEY (`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Exportování dat pro tabulku thesis.migration_versions: ~4 rows (přibližně)
+DELETE FROM `migration_versions`;
+/*!40000 ALTER TABLE `migration_versions` DISABLE KEYS */;
+INSERT INTO `migration_versions` (`version`, `executed_at`) VALUES
+	('20200225011405', '2020-02-25 02:30:17'),
+	('20200225012803', '2020-02-25 01:33:42'),
+	('20200225155255', '2020-02-25 15:53:27'),
+	('20200225165338', '2020-02-25 16:53:44'),
+	('20200226195434', '2020-02-26 19:54:46'),
+	('20200309030806', '2020-03-09 03:08:26'),
+	('20200309165315', '2020-03-09 16:53:32');
+/*!40000 ALTER TABLE `migration_versions` ENABLE KEYS */;
+
+-- Exportování struktury pro tabulka thesis.predmet
+DROP TABLE IF EXISTS `predmet`;
+CREATE TABLE IF NOT EXISTS `predmet` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `skola_id` int(11) DEFAULT NULL,
+  `nazev` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `zkratka` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_DD95494271B6FA82` (`skola_id`),
+  CONSTRAINT `FK_DD95494271B6FA82` FOREIGN KEY (`skola_id`) REFERENCES `skola` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Exportování dat pro tabulku thesis.predmet: ~17 rows (přibližně)
+DELETE FROM `predmet`;
+/*!40000 ALTER TABLE `predmet` DISABLE KEYS */;
+INSERT INTO `predmet` (`id`, `skola_id`, `nazev`, `zkratka`) VALUES
+	(1, 1, 'Český Jazyk', 'ČJ'),
+	(2, 1, 'Matematika', 'M'),
+	(3, 1, 'Prvouka', 'Pr'),
+	(4, 1, 'Anglický Jazyk', 'AJ'),
+	(5, 1, 'Hudební Výchova', 'HV'),
+	(6, 1, 'Výtvarná Výchova', 'VV'),
+	(7, 1, 'Tělesná Výchova', 'TV'),
+	(8, 1, 'Pracovní Činnosti', 'PČ'),
+	(9, 1, 'Vlastivěda', 'V'),
+	(10, 1, 'Přírodověda', 'Př'),
+	(11, 1, 'Dějepis', 'D'),
+	(12, 1, 'Fyzika', 'F'),
+	(13, 1, 'Chemie', 'Ch'),
+	(14, 1, 'Německý Jazyk', 'NJ'),
+	(15, 1, 'Občanská Výchova', 'OV'),
+	(16, 1, 'Zeměpis', 'Z'),
+	(17, 1, 'Informatika', 'I'),
+	(18, 1, 'Přírodopis', 'Přs');
+/*!40000 ALTER TABLE `predmet` ENABLE KEYS */;
+
+-- Exportování struktury pro tabulka thesis.skola
+DROP TABLE IF EXISTS `skola`;
+CREATE TABLE IF NOT EXISTS `skola` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nazev` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stat` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mesto` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ulice` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cis_pop` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Exportování dat pro tabulku thesis.skola: ~0 rows (přibližně)
+DELETE FROM `skola`;
+/*!40000 ALTER TABLE `skola` DISABLE KEYS */;
+INSERT INTO `skola` (`id`, `nazev`, `stat`, `mesto`, `ulice`, `cis_pop`) VALUES
+	(1, 'Zš Fiktivní škola\r\n', 'Česká replublika', 'Praha', 'Pod příkopy', '189');
+/*!40000 ALTER TABLE `skola` ENABLE KEYS */;
+
+-- Exportování struktury pro tabulka thesis.trida
+DROP TABLE IF EXISTS `trida`;
+CREATE TABLE IF NOT EXISTS `trida` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nazev` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `skola_id` int(11) DEFAULT NULL,
+  `ucebna_id` int(11) DEFAULT NULL,
+  `vybrane_predmety_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_7764D6C7A273BD17` (`ucebna_id`),
+  KEY `IDX_7764D6C771B6FA82` (`skola_id`),
+  KEY `IDX_7764D6C76F283DC5` (`vybrane_predmety_id`),
+  CONSTRAINT `FK_7764D6C76F283DC5` FOREIGN KEY (`vybrane_predmety_id`) REFERENCES `vybrane_predmety` (`id`),
+  CONSTRAINT `FK_7764D6C771B6FA82` FOREIGN KEY (`skola_id`) REFERENCES `skola` (`id`),
+  CONSTRAINT `FK_7764D6C7A273BD17` FOREIGN KEY (`ucebna_id`) REFERENCES `ucebna` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Exportování dat pro tabulku thesis.trida: ~22 rows (přibližně)
+DELETE FROM `trida`;
+/*!40000 ALTER TABLE `trida` DISABLE KEYS */;
+INSERT INTO `trida` (`id`, `nazev`, `skola_id`, `ucebna_id`, `vybrane_predmety_id`) VALUES
+	(1, '1.A', 1, 1, 1),
+	(2, '1.B', 1, NULL, 1),
+	(3, '1.C', 1, NULL, 1),
+	(4, '2.A', 1, NULL, 2),
+	(5, '2.B', 1, NULL, 2),
+	(6, '2.C', 1, NULL, 2),
+	(7, '3.A', 1, NULL, 2),
+	(8, '3.B', 1, NULL, 2),
+	(9, '3.C', 1, NULL, 2),
+	(10, '4.A', 1, NULL, 4),
+	(11, '4.B', 1, NULL, 4),
+	(12, '4.C', 1, NULL, 4),
+	(13, '5.A', 1, NULL, 4),
+	(14, '5.B', 1, NULL, 4),
+	(16, '6.A', 1, NULL, 6),
+	(17, '6.B', 1, NULL, 6),
+	(19, '7.A', 1, NULL, 6),
+	(20, '7.B', 1, NULL, 6),
+	(22, '8.A', 1, NULL, 6),
+	(23, '8.B', 1, NULL, 6),
+	(25, '9.A', 1, NULL, 6),
+	(26, '9.B', 1, NULL, 6);
+/*!40000 ALTER TABLE `trida` ENABLE KEYS */;
+
+-- Exportování struktury pro tabulka thesis.ucebna
+DROP TABLE IF EXISTS `ucebna`;
+CREATE TABLE IF NOT EXISTS `ucebna` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `skola_id` int(11) DEFAULT NULL,
+  `nazev` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `patro` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_B2DF3FD471B6FA82` (`skola_id`),
+  CONSTRAINT `FK_B2DF3FD471B6FA82` FOREIGN KEY (`skola_id`) REFERENCES `skola` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Exportování dat pro tabulku thesis.ucebna: ~5 rows (přibližně)
+DELETE FROM `ucebna`;
+/*!40000 ALTER TABLE `ucebna` DISABLE KEYS */;
+INSERT INTO `ucebna` (`id`, `skola_id`, `nazev`, `patro`) VALUES
+	(1, 1, 'SB12', 1),
+	(2, 1, 'UB45', 4),
+	(3, 1, 'SB23', 2),
+	(4, 1, 'SB14', 1),
+	(5, 1, 'UB28', 2);
+/*!40000 ALTER TABLE `ucebna` ENABLE KEYS */;
+
+-- Exportování struktury pro tabulka thesis.ucitele
+DROP TABLE IF EXISTS `ucitele`;
+CREATE TABLE IF NOT EXISTS `ucitele` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `jmeno` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `trida_id` int(11) DEFAULT NULL,
+  `skola_id` int(11) DEFAULT NULL,
+  `prijmeni` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dat_nar` date NOT NULL,
+  `stat` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mesto` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ulice` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cis_pop` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `psc` smallint(6) NOT NULL,
+  `ucebna_id` int(11) DEFAULT NULL,
+  `poznamka` longtext COLLATE utf8mb4_unicode_ci,
+  `telefon` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `web` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_67AFC7466F1C825A` (`trida_id`),
+  KEY `IDX_67AFC74671B6FA82` (`skola_id`),
+  KEY `IDX_67AFC746A273BD17` (`ucebna_id`),
+  CONSTRAINT `FK_67AFC7466F1C825A` FOREIGN KEY (`trida_id`) REFERENCES `trida` (`id`),
+  CONSTRAINT `FK_67AFC74671B6FA82` FOREIGN KEY (`skola_id`) REFERENCES `skola` (`id`),
+  CONSTRAINT `FK_67AFC746A273BD17` FOREIGN KEY (`ucebna_id`) REFERENCES `ucebna` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Exportování dat pro tabulku thesis.ucitele: ~4 rows (přibližně)
+DELETE FROM `ucitele`;
+/*!40000 ALTER TABLE `ucitele` DISABLE KEYS */;
+INSERT INTO `ucitele` (`id`, `jmeno`, `image`, `trida_id`, `skola_id`, `prijmeni`, `dat_nar`, `stat`, `mesto`, `ulice`, `cis_pop`, `psc`, `ucebna_id`, `poznamka`, `telefon`, `email`, `web`) VALUES
+	(1, 'Admin', NULL, NULL, 1, 'Admin', '2020-03-09', 'n/a', 'n/a', 'n/a', '0000', 0, NULL, NULL, NULL, NULL, NULL),
+	(11, 'Alfons', 'b6eb6cbd05d50cb98e00009c8a22793f.png', NULL, 1, 'Kaktus', '1963-07-19', 'Česká republika', 'Praha', 'Červená', '445', 11500, 2, NULL, NULL, NULL, NULL),
+	(13, 'Lucie', '4a7061d711e12ad5790e7e725966c5f5.png', NULL, 1, 'Novotná', '1999-05-16', 'Česká republika', 'Brno', 'Růžová', '479', 12900, 1, NULL, '+123456789', 'Lucie@seznam.cz', 'Lucie.com'),
+	(14, 'Jarka', 'efed1129a53eca5d3333c4dbb136afb5.jpeg', NULL, 1, 'Opičková', '1950-04-28', 'Česká republika', 'Jílové u Prahy', 'Nad Oblohou', '456', 15900, 1, NULL, NULL, NULL, NULL),
+	(16, 'Andrej', 'da81c4bf27daaad748a3100da611da50.png', 1, 1, 'Jamrich', '1997-02-04', 'Slovenská Republika', 'Bánská Bystrica', 'Hnědá', '154', 18500, 1, NULL, NULL, NULL, NULL);
+/*!40000 ALTER TABLE `ucitele` ENABLE KEYS */;
+
+-- Exportování struktury pro tabulka thesis.user
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(180) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `roles` json NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ucitel_id` int(11) DEFAULT NULL,
+  `zak_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_8D93D649F85E0677` (`username`),
+  UNIQUE KEY `UNIQ_8D93D64935E6DF29` (`ucitel_id`),
+  UNIQUE KEY `UNIQ_8D93D649CA0EBDD9` (`zak_id`),
+  CONSTRAINT `FK_8D93D64935E6DF29` FOREIGN KEY (`ucitel_id`) REFERENCES `ucitele` (`id`),
+  CONSTRAINT `FK_8D93D649CA0EBDD9` FOREIGN KEY (`zak_id`) REFERENCES `zak` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Exportování dat pro tabulku thesis.user: ~3 rows (přibližně)
+DELETE FROM `user`;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` (`id`, `username`, `roles`, `password`, `ucitel_id`, `zak_id`) VALUES
+	(2, 'test', '["ROLE_TEACHER"]', '$argon2i$v=19$m=65536,t=4,p=1$WUNjUHVNREdLN1U3TGlTOQ$WqiVRawhfKEixsi5oiG3QQXKht/bu09UXu0IrVZ7kpg', 16, NULL),
+	(3, 'test2', '["ROLE_STUDENT"]', '$argon2i$v=19$m=65536,t=4,p=1$cDJsVkt5S1ZZVmhyS3NxWg$3TSx4Yv5XzCjx9fJByqrCpp02GzjNvprZKBPS0Ou9Vk', NULL, 1),
+	(4, 'Admin', '["ROLE_ADMIN"]', '$argon2i$v=19$m=65536,t=4,p=1$WVNCMzN0ZlFsczYzeXZvZQ$iUKrf8UmcmkxSH7/aW2Ds13XjH0TzfRqkQPBIDmqlHQ', 1, NULL);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+
+-- Exportování struktury pro tabulka thesis.vybrane_predmety
+DROP TABLE IF EXISTS `vybrane_predmety`;
+CREATE TABLE IF NOT EXISTS `vybrane_predmety` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Exportování dat pro tabulku thesis.vybrane_predmety: ~3 rows (přibližně)
+DELETE FROM `vybrane_predmety`;
+/*!40000 ALTER TABLE `vybrane_predmety` DISABLE KEYS */;
+INSERT INTO `vybrane_predmety` (`id`) VALUES
+	(1),
+	(2),
+	(4),
+	(6);
+/*!40000 ALTER TABLE `vybrane_predmety` ENABLE KEYS */;
+
+-- Exportování struktury pro tabulka thesis.vybrane_predmety_predmet
+DROP TABLE IF EXISTS `vybrane_predmety_predmet`;
+CREATE TABLE IF NOT EXISTS `vybrane_predmety_predmet` (
+  `vybrane_predmety_id` int(11) NOT NULL,
+  `predmet_id` int(11) NOT NULL,
+  PRIMARY KEY (`vybrane_predmety_id`,`predmet_id`),
+  KEY `IDX_FC1F02BC6F283DC5` (`vybrane_predmety_id`),
+  KEY `IDX_FC1F02BCB4810FC4` (`predmet_id`),
+  CONSTRAINT `FK_FC1F02BC6F283DC5` FOREIGN KEY (`vybrane_predmety_id`) REFERENCES `vybrane_predmety` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_FC1F02BCB4810FC4` FOREIGN KEY (`predmet_id`) REFERENCES `predmet` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Exportování dat pro tabulku thesis.vybrane_predmety_predmet: ~29 rows (přibližně)
+DELETE FROM `vybrane_predmety_predmet`;
+/*!40000 ALTER TABLE `vybrane_predmety_predmet` DISABLE KEYS */;
+INSERT INTO `vybrane_predmety_predmet` (`vybrane_predmety_id`, `predmet_id`) VALUES
+	(1, 1),
+	(1, 2),
+	(1, 3),
+	(1, 4),
+	(1, 5),
+	(1, 6),
+	(1, 7),
+	(1, 8),
+	(2, 1),
+	(2, 2),
+	(2, 3),
+	(2, 4),
+	(4, 1),
+	(4, 2),
+	(4, 4),
+	(4, 9),
+	(4, 10),
+	(6, 1),
+	(6, 2),
+	(6, 4),
+	(6, 5),
+	(6, 7),
+	(6, 8),
+	(6, 11),
+	(6, 12),
+	(6, 13),
+	(6, 14),
+	(6, 15),
+	(6, 18);
+/*!40000 ALTER TABLE `vybrane_predmety_predmet` ENABLE KEYS */;
+
+-- Exportování struktury pro tabulka thesis.zak
+DROP TABLE IF EXISTS `zak`;
+CREATE TABLE IF NOT EXISTS `zak` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `trida_id` int(11) NOT NULL,
+  `skola_id` int(11) DEFAULT NULL,
+  `jmeno` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `prijmeni` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dat_nar` date NOT NULL,
+  `image` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `stat` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mesto` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ulice` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cis_pop` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `psc` smallint(6) NOT NULL,
+  `poznamka` longtext COLLATE utf8mb4_unicode_ci,
+  `tel` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_A1D6A26F1C825A` (`trida_id`),
+  KEY `IDX_A1D6A271B6FA82` (`skola_id`),
+  CONSTRAINT `FK_A1D6A26F1C825A` FOREIGN KEY (`trida_id`) REFERENCES `trida` (`id`),
+  CONSTRAINT `FK_A1D6A271B6FA82` FOREIGN KEY (`skola_id`) REFERENCES `skola` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Exportování dat pro tabulku thesis.zak: ~0 rows (přibližně)
+DELETE FROM `zak`;
+/*!40000 ALTER TABLE `zak` DISABLE KEYS */;
+INSERT INTO `zak` (`id`, `trida_id`, `skola_id`, `jmeno`, `prijmeni`, `dat_nar`, `image`, `stat`, `mesto`, `ulice`, `cis_pop`, `psc`, `poznamka`, `tel`) VALUES
+	(1, 1, 1, 'Matěj', 'Němec', '2011-05-07', NULL, 'Česká Republika', 'Praha', 'Černá', '55', 11200, 'Žák nemůže jíst mléčné výrobky  a maso. Trpí lehkou formou autismu', '+420774225136'),
+	(2, 10, 1, 'Daniel', 'Kamený', '2009-04-05', NULL, 'Česká Republika', 'Praha', 'Modrá', '670', 29100, NULL, '+420893167820');
+/*!40000 ALTER TABLE `zak` ENABLE KEYS */;
+
+-- Exportování struktury pro tabulka thesis.znamka
+DROP TABLE IF EXISTS `znamka`;
+CREATE TABLE IF NOT EXISTS `znamka` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `zak_id` int(11) NOT NULL,
+  `predmet_id` int(11) NOT NULL,
+  `ucitel_id` int(11) NOT NULL,
+  `hodnota` smallint(6) DEFAULT NULL,
+  `poznamka` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `datum` date NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_42506D9FCA0EBDD9` (`zak_id`),
+  KEY `IDX_42506D9FB4810FC4` (`predmet_id`),
+  KEY `IDX_42506D9F35E6DF29` (`ucitel_id`),
+  CONSTRAINT `FK_42506D9F35E6DF29` FOREIGN KEY (`ucitel_id`) REFERENCES `ucitele` (`id`),
+  CONSTRAINT `FK_42506D9FB4810FC4` FOREIGN KEY (`predmet_id`) REFERENCES `predmet` (`id`),
+  CONSTRAINT `FK_42506D9FCA0EBDD9` FOREIGN KEY (`zak_id`) REFERENCES `zak` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Exportování dat pro tabulku thesis.znamka: ~8 rows (přibližně)
+DELETE FROM `znamka`;
+/*!40000 ALTER TABLE `znamka` DISABLE KEYS */;
+INSERT INTO `znamka` (`id`, `zak_id`, `predmet_id`, `ucitel_id`, `hodnota`, `poznamka`, `datum`) VALUES
+	(8, 1, 1, 16, 2, 'Test', '2020-03-09'),
+	(9, 1, 2, 16, 3, NULL, '2020-03-09'),
+	(10, 2, 1, 16, 1, NULL, '2020-03-09'),
+	(11, 2, 4, 11, 2, NULL, '2020-03-09'),
+	(12, 1, 1, 14, 1, NULL, '2020-03-09'),
+	(13, 2, 2, 13, 2, NULL, '2020-03-09'),
+	(14, 2, 1, 16, 3, NULL, '2020-03-09'),
+	(15, 2, 1, 16, 4, NULL, '2020-03-09');
+/*!40000 ALTER TABLE `znamka` ENABLE KEYS */;
+
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
