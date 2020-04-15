@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Učitelé
+{% endblock %}
+
+{% block body %}
+
+    <h2>Seznam všech učitelů</h2>
+
+    <hr>
+    {% if is_granted('ROLE_ADMIN') %}
+    <a href="{{path('ucitele.create')}}" class="btn btn-outline-primary float-left">Vytvořit nového učitele</a>
+    <br>
+    {% endif %}
+    <br>
+
+
+    <div class="shadow" style="width: max-content;">
+            <table id="table" data-toggle="table" data-height="500"
+                   class="table table-bordered table-borderless table-hover">
+                <thead class="thead-light">
+                <tr>
+                    <th data-field="ID">ID</th>
+                    <th data-field="Jmeno">Jméno</th>
+                    <th data-field="Prijmeni">Příjmení</th>
+                    <th data-field="Ucebna">Učebna</th>
+                    <th data-field="Trida">Třída</th>
+                    <th data-field="DatNar" style="width:150px">Datum Narození</th>
+                    <th data-field="Stat">Stát</th>
+                    <th data-field="Mesto">Město</th>
+                    <th data-field="Ulice">Ulice</th>
+                    <th data-field="CisPop" style="width: 125px">Číslo popisné</th>
+                    <th data-field="PSC">PSČ</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for ucitel in ucitele %}
+
+                    <tr style="transform: rotate(0);">
+                        <td scope="colgroup"><a href="{{ path('ucitele.show', {id: ucitel.id}) }}"
+                                           class="stretched-link">{{ ucitel.id }}</a></td>
+                        <td>
+                            {{ ucitel.jmeno }}
+                        </td>
+                        <td>
+                            {{ ucitel.prijmeni }}
+                        </td>
+                        <td>
+                            {{ ucitel.ucebna }}
+                        </td>
+                        <td>
+                            {{ ucitel.trida }}
+                        </td>
+                        <td>
+                            {{ ucitel.datNar|date('Y-m-d') }}
+                        </td>
+                        <td>
+                            {{ ucitel.stat }}
+                        </td>
+                        <td>
+                            {{ ucitel.mesto }}
+                        </td>
+                        <td>
+                            {{ ucitel.ulice }}
+                        </td>
+                        <td>
+                            {{ ucitel.cisPop }}
+                        </td>
+                        <td>
+                            {{ ucitel.psc }}
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+            </table>
+    </div>
+
+{% endblock %}

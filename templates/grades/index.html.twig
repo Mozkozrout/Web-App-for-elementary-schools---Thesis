@@ -1,0 +1,170 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Známky{% endblock %}
+
+{% block body %}
+
+    <h2>Známky</h2>
+
+    <hr>
+
+    <div class="text-left">
+        {{ form_start(form) }}
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Rok</span>
+            </div>
+            {{ form_widget(form.rok) }}
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Zobrazit známky pro:</span>
+            </div>
+            {{ form_widget(form.trida) }}
+            {{ form_widget(form.predmet) }}
+        </div>
+
+        <div class="btn-group">
+            {{ form_widget(form.vyber) }}
+
+        </div>
+
+        {{ form_end(form) }}
+
+    </div>
+
+    <hr>
+
+    <div class="shadow" style="width: max-content;">
+        <table id="table" data-toggle="table" data-height="500"
+               class="table table-bordered table-borderless">
+            <thead class="thead-light">
+            <tr>
+                <th data-field="Jméno žáka">Jméno žáka</th>
+
+                {% set Max = 0 %}
+
+                {% for z in zak %}
+                    {% set cnt = 0 %}
+                    {% for zn in z.znamka %}
+                        {% if zn.predmet == predmet and z.trida == trida and zn.datum|date("Y") == rok %}
+                            {% set cnt = cnt + 1 %}
+                        {% endif %}
+
+                        {% if predmet == null and trida == null and zn.datum|date("Y") == rok %}
+                            {% set cnt = cnt + 1 %}
+                        {% endif %}
+
+                        {% if predmet == null and trida == z.trida and zn.datum|date("Y") == rok %}
+                            {% set cnt = cnt + 1 %}
+                        {% endif %}
+
+                        {% if predmet == zn.predmet and trida == null and zn.datum|date("Y") == rok %}
+                            {% set cnt = cnt + 1 %}
+                        {% endif %}
+
+                    {% endfor %}
+
+                    {% if cnt > Max %}
+                        {% set Max = cnt %}
+                    {% endif %}
+                    {% set cnt = 0 %}
+                {% endfor %}
+
+                {% for i in 0..Max - 1 %}
+
+                    <th> {{ i + 1 }} </th>
+
+                {% endfor %}
+
+                <th data-field="Prumer">Průměr</th>
+
+                {% if not is_granted('ROLE_STUDENT') %}
+
+                <th data-field="Nova znamka">Nová známka</th>
+
+                {% endif %}
+
+            </tr>
+            </thead>
+            <tbody>
+
+            {% set prum, cnt = 0, 0 %}
+            {% for z in zak %}
+                {% if z.trida == trida or trida == null %}
+                    <tr>
+                        <td style="background-color: #808080; color: #f2f2f2">
+                            <a href="{{ path('zak.show', {id: z.id}) }}" style="color: #0d0d0d">{{ z.jmeno }} {{ z.prijmeni }}</a>
+                        </td>
+
+                        {% for zn in z.znamka %}
+
+                            {% if zn.predmet == predmet or predmet == null and zn.datum|date("Y") == rok %}
+
+                                {% set prum, cnt = prum + zn.hodnota, cnt + 1 %}
+
+                                <td>
+                                    <a style="color: black" href="{{ path('grades.show', {id: zn.id}) }}">{{ zn.hodnota }}</a>
+                                </td>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                        {% for i in 0..Max - cnt %}
+
+                            {% if loop.last %}
+
+                                {% if cnt != 0 %}
+
+                                    <td>{{ prum / cnt }}</td>
+
+                                {% else %}
+
+                                    <td>{{ prum }}</td>
+
+                                {% endif %}
+
+                                {%  set prum, cnt = 0, 0 %}
+
+                                {% if is_granted('ROLE_ADMIN') %}
+
+                                     {% if trida == null or predmet == null %}
+                                        <td><a href="{{ path('grades.create', {uid: 1, zid: z.id, tid: 1, pid: 1}) }}"> Přidat </a></td>
+                                     {% else %}
+                                        <td><a href="{{ path('grades.create', {uid: 1, zid: z.id, tid: trida.id, pid: predmet.id}) }}"> Přidat </a></td>
+                                     {% endif %}
+
+                                {% endif %}
+
+                                {% if is_granted('ROLE_TEACHER') %}
+
+                                    {% if trida == null or predmet == null %}
+                                        <td><a href="{{ path('grades.create', {uid: app.user.ucitel.id, zid: z.id, tid: 1, pid: 1}) }}"> Přidat </a></td>
+                                    {% else %}
+                                        <td><a href="{{ path('grades.create', {uid: app.user.ucitel.id, zid: z.id, tid: trida.id, pid: predmet.id}) }}"> Přidat </a></td>
+                                    {% endif %}
+
+                                {% endif %}
+
+                            {% else %}
+                                <th></th>
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </tr>
+                {% endif %}
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+    <hr>
+
+
+
+{% endblock %}

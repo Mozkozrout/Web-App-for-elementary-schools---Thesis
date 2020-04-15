@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Přidání Známky{% endblock %}
+
+{% block body %}
+
+ {{ form_start(form, {'attr' : {'class' : 'needs-validation', 'novalidate' : true, 'style' : 'min-width: 400px'}}) }}
+
+ <div class="errors">
+  {{ form_errors(form) }}
+ </div>
+
+ <h3 class="h3 card-title mb-3 font-weight-normal">Přidání známky</h3>
+
+ <br>
+
+ <div class="input-group mb-3">
+  <div class="input-group-prepend">
+   <span class="input-group-text">Známka</span>
+  </div>
+  {{ form_widget(form.hodnota) }}
+ </div>
+
+ <div class="input-group mb-3">
+  <div class="input-group-prepend">
+   <span class="input-group-text">Žák</span>
+  </div>
+  {{ form_widget(form.zak) }}
+ </div>
+
+ <hr>
+
+ <div class="input-group mb-3">
+  <div class="input-group-prepend">
+   <span class="input-group-text">Předmět</span>
+  </div>
+  {{ form_widget(form.predmet) }}
+ </div>
+
+ <div class="input-group mb-3">
+  <div class="input-group-prepend">
+   <span class="input-group-text">Vyučující</span>
+  </div>
+  {{ form_widget(form.ucitel) }}
+ </div>
+
+ <div class="input-group mb-3">
+  <div class="input-group-prepend">
+   <span class="input-group-text">Poznámka</span>
+  </div>
+  {{ form_widget(form.poznamka) }}
+ </div>
+
+ <div class="input-group mb-3">
+  <div class="input-group-prepend">
+   <span class="input-group-text">Datum zápisu</span>
+  </div>
+  {{ form_widget(form.datum) }}
+ </div>
+
+ <br>
+
+ {{ form_row(form.save) }}
+
+ {{ form_end(form) }}
+
+{% endblock %}

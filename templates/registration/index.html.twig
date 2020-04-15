@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {{ form_start(form, {'attr' : {'class' : 'needs-validation', 'novalidate' : true, 'style' : 'max-width: 400px'}}) }}
+
+    <h2 class="h2 card-title mb-3 font-weight-normal">Registrace nového uživatele</h2>
+
+    <hr>
+    <br>
+
+    <div class="text-left">
+
+    <div class="errors">
+        {{ form_errors(form) }}
+    </div>
+
+    {{ form_end(form) }}
+
+    </div>
+
+{% endblock %}

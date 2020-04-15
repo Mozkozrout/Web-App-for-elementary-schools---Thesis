@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Registrace nového Učitele
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form, {'attr' : {'class' : 'needs-validation', 'novalidate' : true}}) }}
+    <div class="errors">
+        {{ form_errors(form) }}
+    </div>
+
+    <h3 class="h3 card-title mb-3 font-weight-normal">Registrace nového Učitele</h3>
+
+    <br>
+
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Celé jméno</span>
+        </div>
+        {{ form_widget(form.jmeno) }}
+
+        {{ form_widget(form.prijmeni) }}
+
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Datum Narození</span>
+        </div>
+        {{ form_widget(form.datNar) }}
+    </div>
+
+    <br>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Profilový obrázek</span>
+        </div>
+        {{ form_widget(form.image) }}
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Třidním učitelem pro třídu:</span>
+        </div>
+        {{ form_widget(form.trida) }}
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Škola</span>
+        </div>
+        {{ form_widget(form.skola, {'attr' : {'disabled' : true}}) }}
+    </div>
+
+    <br>
+
+    <div class="input-group mb-0">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Adresa</span>
+        </div>
+        <div>
+            <div class="input-group mb-1">
+                <div></div>
+                {{ form_widget(form.mesto) }}
+                {{ form_widget(form.ulice) }}
+                {{ form_widget(form.cisPop) }}
+            </div>
+            <div class="input-group mb-0">
+                <div></div>
+                {{ form_widget(form.stat) }}
+                {{ form_widget(form.psc) }}
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    {{ form_row(form.save) }}
+
+    {{ form_end(form) }}
+
+{% endblock %}

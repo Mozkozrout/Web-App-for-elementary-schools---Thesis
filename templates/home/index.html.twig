@@ -1,0 +1,398 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Školní systém
+{% endblock %}
+
+{% block body %}
+
+    <div class="shadow">
+        <div class="jumbotron">
+            <div class="container" align="center">
+
+                {% if not(is_granted('IS_AUTHENTICATED_FULLY')) %}
+
+                <h1 class="display-3">ZŠ Fiktivní základní škola</h1>
+                <p>Toto je informační a administrační webový systém základní školy Fiktivní základní škola.
+                    Umožňuje žákům a učitelům naší školy organizaci a známkování. Pokud chcete vstoupit do systému,
+                    prosím, přihlašte se.</p>
+
+                    {% elseif is_granted('ROLE_ADMIN') %}
+
+                        <h1>Používáte systém s maximálním oprávněním</h1>
+                        <p>Jako administrátor můžete přidávat a odebírat nové uživatele, žáky a učitele</p>
+
+                        <hr>
+
+                    <div class="d-flex justify-content-center">
+                        <div class="container" align="right">
+                            <div class="analog-clock float-right" style="margin: 20px">
+                            <svg width="140" height="140">
+                                <circle id="clock-face" cx="70" cy="70" r="65" />
+                                <line id="h-hand" x1="70" y1="70" x2="70" y2="38" />
+                                <line id="m-hand" x1="70" y1="70" x2="70" y2="20" />
+                                <line id="s-hand" x1="70" y1="70" x2="70" y2="12" />
+                                <line id="s-tail" x1="70" y1="70" x2="70" y2="56" />
+                                <text x="62" y="18">12</text>
+                                <text x="126" y="76">3</text>
+                                <text x="66" y="130">6</text>
+                                <text x="7" y="76">9</text>
+                            </svg>
+                            <div class="time-text">
+                                <span id="hr">00</span>
+                                <span>:</span>
+                                <span id="min">00</span>
+                                <span>:</span>
+                                <span id="sec">00</span>
+                            </div>
+                        </div>
+                        <div>
+
+
+                            <div class="container" align="left">
+                                <h3>Seznam všech uživatelů</h3>
+                                <br>
+                                <div class="shadow bg-white" style="width: max-content;">
+                                    <table id="table" data-toggle="table" data-height="500"
+                                   class="table table-bordered table-borderless table-hover">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th data-field="ID">ID</th>
+                                    <th data-field="Username">Přihlašovací jméno</th>
+                                    <th data-field="Role">Role</th>
+                                    <th data-field="Učitel">Učitel</th>
+                                    <th data-field="Žák">Žák</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for user in users %}
+
+                                    <tr style="transform: rotate(0);">
+                                        <td scope="colgroup"><a href="{{ path('user.edit', {id: user.id}) }}"
+                                                                class="stretched-link">{{ user.id }}</a></td>
+                                        <td>
+                                            {{ user.username }}
+                                        </td>
+                                        <td>
+                                            {% for r in user.roles %}
+                                                {{ r }}
+                                            {% endfor %}
+                                        </td>
+                                        <td>
+                                            {{ user.ucitel }}
+                                        </td>
+                                        <td>
+                                            {{ user.zak }}
+                                        </td>
+                                    </tr>
+
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                                </div>
+                            </div>
+                        </div>
+                            <hr>
+
+                    {% elseif is_granted('ROLE_TEACHER') %}
+
+                        <h1>Používáte systém jako Vyučující</h1>
+                        <p>Jako vyučující můžete spravovat žáky a přidávat jim známky nebo tvořit rozvrhy</p>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-center">
+                                <ul class="list-group list-group shadow-sm" style="min-width: fit-content; max-height: 130px">
+                                    <li class="list-group-item">Jste přihlášen jako: {{ app.user.ucitel.jmeno }}
+                                        {{ app.user.ucitel.prijmeni }}</li>
+
+                                    {% if app.user.ucitel.trida == null %}
+
+                                        <li class="list-group-item">Nejste Třídním učitelem</li>
+
+                                    {% else %}
+
+                                        <li class="list-group-item">Třídním učitelem pro: {{ app.user.ucitel.trida }} </li>
+
+                                    {% endif %}
+
+                                    <li class="list-group-item">S Kabinetem: {{ app.user.ucitel.ucebna }}</li>
+                                </ul>
+
+                        {% if rozvrh == null %}
+
+                            <h5 style="min-width: fit-content; padding: 20px">Příští hodina už není, vyučování skončilo</h5>
+
+                        {% else %}
+
+                            <ul class="list-group list-group shadow-sm" style="min-width: fit-content; max-height: 130px">
+                                <li class="list-group-item">Příští hodina je {{ rozvrh.predmet.nazev }}</li>
+                                <li class="list-group-item">V učebně {{ rozvrh.ucebna}}</li>
+                                <li class="list-group-item">Se třídou {{ rozvrh.trida }}</li>
+                            </ul>
+
+                        {% endif %}
+
+                        <div class="container" align="right">
+                            <div class="analog-clock" style="margin: 20px">
+                            <svg width="140" height="140">
+                                <circle id="clock-face" cx="70" cy="70" r="65" />
+                                <line id="h-hand" x1="70" y1="70" x2="70" y2="38" />
+                                <line id="m-hand" x1="70" y1="70" x2="70" y2="20" />
+                                <line id="s-hand" x1="70" y1="70" x2="70" y2="12" />
+                                <line id="s-tail" x1="70" y1="70" x2="70" y2="56" />
+                                <text x="62" y="18">12</text>
+                                <text x="126" y="76">3</text>
+                                <text x="66" y="130">6</text>
+                                <text x="7" y="76">9</text>
+                            </svg>
+                            <div class="time-text">
+                                <span id="hr">00</span>
+                                <span>:</span>
+                                <span id="min">00</span>
+                                <span>:</span>
+                                <span id="sec">00</span>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+
+                        <hr>
+
+                    {% elseif is_granted('ROLE_STUDENT') %}
+
+                        <h1>Používáte systém jako Žák</h1>
+                        <p>Jako žák si můžete prohlížet známky a rozvrh nebo zjišťovat důležité informace o výuce</p>
+
+                        <hr>
+
+
+                        <div class="d-flex justify-content-center">
+                            <ul class="list-group list-group shadow-sm" style="min-width: fit-content; max-height: 130px">
+                                <li class="list-group-item">Jste přihlášen jako: {{ app.user.zak.jmeno }} {{ app.user.zak.prijmeni }}</li>
+                                <li class="list-group-item">Ze třídy: {{ app.user.zak.trida }} </li>
+                                <li class="list-group-item">S Domovskou učebnou: {{ app.user.zak.trida.ucebna }}</li>
+                            </ul>
+
+                            {% if rozvrh == null %}
+
+                                <h5 style="min-width: fit-content; padding: 20px">Příští hodina už není, škola skončila</h5>
+
+                            {% else %}
+
+                                <p style="min-width: fit-content; padding: 20px"> </p>
+                                <ul class="list-group list-group shadow-sm" style="min-width: fit-content; max-height: 130px">
+                                    <li class="list-group-item">Příští hodina je {{ rozvrh.predmet.nazev }}</li>
+                                    <li class="list-group-item">V učebně {{ rozvrh.ucebna}}</li>
+                                    <li class="list-group-item">S učitelem {{ rozvrh.ucitel }}</li>
+                                </ul>
+
+                            {% endif %}
+
+                                <div class="container" align="right">
+                                    <div class="analog-clock" style="margin: 20px">
+                            <svg width="140" height="140">
+                                <circle id="clock-face" cx="70" cy="70" r="65" />
+                                <line id="h-hand" x1="70" y1="70" x2="70" y2="38" />
+                                <line id="m-hand" x1="70" y1="70" x2="70" y2="20" />
+                                <line id="s-hand" x1="70" y1="70" x2="70" y2="12" />
+                                <line id="s-tail" x1="70" y1="70" x2="70" y2="56" />
+                                <text x="62" y="18">12</text>
+                                <text x="126" y="76">3</text>
+                                <text x="66" y="130">6</text>
+                                <text x="7" y="76">9</text>
+                            </svg>
+                            <div class="time-text">
+                                <span id="hr">00</span>
+                                <span>:</span>
+                                <span id="min">00</span>
+                                <span>:</span>
+                                <span id="sec">00</span>
+                            </div>
+                        </div>
+                                </div>
+                            </div>
+                            <hr>
+
+                {% endif %}
+
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+                {% elseif is_granted('IS_AUTHENTICATED_ANONYMOUSLY') %}
+
+                    <p><a class="btn btn-outline-primary btn-lg" href="{{ path('app_login') }}" role="button">Přihlásit &raquo;</a></p>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+
+        {% if is_granted('ROLE_ADMIN') %}
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="shadow">
+                    <div class="card" style="padding: 15px; height: 185px">
+                        <h2 class="h2 card-title mb-3 font-weight-normal">Učitelé</h2>
+                        <p>Seznam učitelů s jejich údaji a pokročilé funkce</p>
+                        <p><a class="btn btn-outline-info" href="{{ path('ucitele.index') }}" role="button">Přejít &raquo;</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="shadow">
+                    <div class="card" style="padding: 15px; height: 185px">
+                        <h2 class="h2 card-title mb-3 font-weight-normal">Registrace</h2>
+                        <p>Formulář s možností registrování nových uživatelů</p>
+                        <p><a class="btn btn-outline-info" href="{{ path('register') }}" role="button">Přejít &raquo;</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="shadow">
+                    <div class="card" style="padding: 15px; height: 185px">
+                        <h2 class="h2 card-title mb-3 font-weight-normal">Žáci</h2>
+                        <p>Seznam žáků s jejich údaji a pokročilými funkcemi</p>
+                        <p><a class="btn btn-outline-info" href="{{ path('zak.index') }}" role="button">Přejít &raquo;</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% elseif is_granted('ROLE_TEACHER') %}
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="shadow">
+                        <div class="card" style="padding: 15px; height: 185px">
+                            <h2 class="h2 card-title mb-3 font-weight-normal">Rozvrhy</h2>
+                            <p>Formulář na tvorbu a zobrazení rozvrhů</p>
+
+                            {% if app.user.ucitel.trida.id == null %}
+
+                                <p><a class="btn btn-outline-info" href="{{ path('time_table.index', {id: 1}) }}" role="button">Přejít &raquo;</a></p>
+
+                            {% else %}
+
+                                <p><a class="btn btn-outline-info" href="{{ path('time_table.index', {id: app.user.ucitel.trida.id}) }}" role="button">Přejít &raquo;</a></p>
+
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="shadow">
+                        <div class="card" style="padding: 15px; height: 185px">
+                            <h2 class="h2 card-title mb-3 font-weight-normal">Známky</h2>
+                            <p>Formulář s možností známkováná žáků</p>
+                            <p><a class="btn btn-outline-info" href="{{ path('grades.index', {pid: 1, tid: 1}) }}" role="button">Přejít &raquo;</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="shadow">
+                        <div class="card" style="padding: 15px; height: 185px">
+                            <h2 class="h2 card-title mb-3 font-weight-normal">Žáci</h2>
+                            <p>Seznam žáků s jejich údaji a další funkce</p>
+                            <p><a class="btn btn-outline-info" href="{{ path('zak.index') }}" role="button">Přejít &raquo;</a></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        {% elseif is_granted('ROLE_STUDENT') %}
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="shadow">
+                        <div class="card" style="padding: 15px; height: 185px">
+                            <h2 class="h2 card-title mb-3 font-weight-normal">Rozvrhy</h2>
+                            <p>Formulář s tvým rozvrhem</p>
+                            <p><a class="btn btn-outline-info" href="{{ path('time_table.index', {id: app.user.zak.trida.id}) }}" role="button">Přejít &raquo;</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="shadow">
+                        <div class="card" style="padding: 15px; height: 185px">
+                            <h2 class="h2 card-title mb-3 font-weight-normal">Známky</h2>
+                            <p>Formulář s možností zobrazení svých známek</p>
+                            <p><a class="btn btn-outline-info" href="{{ path('grades.studentShow', {id: app.user.zak.id}) }}" role="button">Přejít &raquo;</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="shadow">
+                        <div class="card" style="padding: 15px; height: 185px">
+                            <h2 class="h2 card-title mb-3 font-weight-normal">Učitelé</h2>
+                            <p>Informační tabulka se všemi učiteli</p>
+                            <p><a class="btn btn-outline-info" href="{{ path('ucitele.index') }}" role="button">Přejít &raquo;</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% endif %}
+
+        <hr>
+    </div>
+
+    <footer class="container">
+        <p>&copy; Jan Velebný 2020</p>
+    </footer>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            font-family:sans-serif;
+            font-size:14px;
+        }
+
+        .analog-clock{
+            width:140px;
+            height:140px;
+        }
+
+        #clock-face{
+            stroke:black;
+            stroke-width:2px;
+            fill:white;
+        }
+
+        #h-hand, #m-hand, #s-hand, #s-tail{
+            stroke:black;
+            stroke-linecap:round;
+        }
+
+        #h-hand{
+            stroke-width:3px;
+        }
+
+        #m-hand{
+            stroke-width:2px;
+        }
+
+        #s-hand{
+            stroke-width:1px;
+        }
+
+        .time-text{
+            text-align:center;
+        }
+    </style>
+
+
+{% endblock %}

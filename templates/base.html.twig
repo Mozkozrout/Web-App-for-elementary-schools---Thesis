@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Školní Systém{% endblock %}</title>
+
+    {% block stylesheets %}
+
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" type="text/css"/>
+        <style type="text/css">
+            <!--
+            html, body, #tbl_wrap {
+                height: 100%;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            #td_wrap {
+                vertical-align: middle;
+                text-align: center;
+            }
+
+            -->
+            body {
+                padding-top: 3.5rem;
+            }
+        </style>
+
+    {% endblock %}
+
+</head>
+
+
+<body class="text-center" style="background-color: #b9bbbe; background-image: url("{{ '/' ~ 'BG.png' }}")>
+
+<div class="shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" style="opacity: 0.8">
+
+        <a class="navbar-brand" href="{{ path('home') }}">Školní Systém</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+
+                {% if is_granted('ROLE_TEACHER') %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('grades.index', {pid: 1, tid: 1}) }}">Známky</a>
+                    </li>
+                    <li class="nav-item">
+
+                        {% if app.user.ucitel.trida.id == null %}
+
+                            <a class="nav-link" href="{{ path('time_table.index', {id: 1}) }}">Rozvrhy</a>
+
+                        {% else %}
+
+                            <a class="nav-link" href="{{ path('time_table.index', {id: app.user.ucitel.trida.id}) }}">Rozvrhy</a>
+
+                        {% endif %}
+
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('zak.index') }}">Žáci</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('ucitele.index') }}">Učitelé</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('ucitele.show', {id: app.user.ucitel.id}) }}">Profil</a>
+                    </li>
+
+                {% endif %}
+
+                {% if is_granted('ROLE_STUDENT') %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('grades.studentShow', {id: app.user.zak.trida.id}) }}">Známky</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('time_table.index', {id: app.user.zak.trida.id}) }}">Rozvrhy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('ucitele.index') }}">Učitelé</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('zak.show', {id: app.user.zak.id}) }}">Profil</a>
+                    </li>
+
+                {% endif %}
+
+                {% if is_granted('ROLE_ADMIN') %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('grades.index', {pid: 1, tid: 1}) }}">Známky</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('time_table.index', {id: 1}) }}">Rozvrhy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('zak.index') }}">Žáci</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('ucitele.index') }}">Učitelé</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('register') }}">Registrace</a>
+                    </li>
+
+                {% endif %}
+
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+                    <li class="nav-item float-right">
+                        <a class="nav-link" href="{{ path('app_logout') }}">Odhlásit</a>
+                    </li>
+
+                {% endif %}
+
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+<table id="tbl_wrap">
+    <tbody>
+    <tr>
+        <td id="td_wrap">
+
+            <div class="d-flex justify-content-center" style="padding-top: 0px">
+                <div class="shadow-lg" style="border-radius: 4px;">
+                    <div class="card" style="opacity:0.7; padding: 25px">
+                        <div class="card-body text-dark">
+                            <div class="container">
+
+                                {% for message in app.flashes('success') %}
+
+                                    <div class="alert alert-success">
+                                        {{ message }}
+                                    </div>
+
+                                {% endfor %}
+
+                                {% block body %}{% endblock %}
+
+                            </div>
+                            {% block javascripts %}
+
+                                <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+                                <script>
+
+                                    // kontrola zapsání věcí do formu
+                                    (function () {
+                                        'use strict';
+                                        window.addEventListener('load', function () {
+                                            // nahraje všechny formy
+                                            var forms = document.getElementsByClassName('needs-validation');
+                                            // projedou se a zamezí se uložení
+                                            var validation = Array.prototype.filter.call(forms, function (form) {
+                                                form.addEventListener('submit', function (event) {
+                                                    if (form.checkValidity() === false) {
+                                                        event.preventDefault();
+                                                        event.stopPropagation();
+                                                    }
+                                                    form.classList.add('was-validated');
+                                                }, false);
+                                            });
+                                        }, false);
+                                    })();
+
+                                    function clock(){
+                                        //calculate angle
+                                        var d, h, m, s;
+                                        d = new Date;
+
+                                        h = 30 * ((d.getHours()) + d.getMinutes() / 60);
+                                        m = 6 * d.getMinutes();
+                                        s = 6 * d.getSeconds();
+
+                                        //move hands
+                                        setAttr('h-hand', h);
+                                        setAttr('m-hand', m);
+                                        setAttr('s-hand', s);
+                                        setAttr('s-tail', s+180);
+
+                                        //display time
+                                        h = d.getHours();
+                                        m = d.getMinutes();
+                                        s = d.getSeconds();
+
+                                        setText('sec', s);
+                                        setText('min', m);
+                                        setText('hr', h);
+
+                                        //call every second
+                                        setTimeout(clock, 1000);
+
+                                    };
+
+                                    function setAttr(id,val){
+                                        var v = 'rotate(' + val + ', 70, 70)';
+                                        document.getElementById(id).setAttribute('transform', v);
+                                    };
+
+                                    function setText(id,val){
+                                        if(val < 10){
+                                            val = '0' + val;
+                                        }
+                                        document.getElementById(id).innerHTML = val;
+                                    };
+
+                                    window.onload=clock;
+
+                                </script>
+
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

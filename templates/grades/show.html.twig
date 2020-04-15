@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container-mt-3" style="min-width: 300px">
+
+        <h3 class="h3 card-title mb-3 font-weight-normal">Známka</h3>
+
+        <hr>
+
+        <div class="d-flex justify-content-center">
+
+            <div id="InfoBox">
+
+                <h4 class="h4 card-title mb-3 font-weight-normal">{{ znamka.predmet.nazev }}</h4>
+                <h4 class="h4 card-title mb-3 font-weight-normal">{{ znamka.hodnota }}</h4>
+
+                <hr>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Žák: {{ znamka.zak.jmeno}} {{ znamka.zak.prijmeni }}</li>
+                        <li class="list-group-item">Udělil vyučující : {{ znamka.ucitel.jmeno}} {{ znamka.ucitel.prijmeni }}</li>
+                        <li class="list-group-item">Datum zápisu: {{ znamka.datum|date("d.m.Y") }}</li>
+                    </ul>
+            </div>
+        </div>
+
+        {% if znamka.poznamka != null %}
+
+        <div class="d-flex justify-content-center">
+            <div id="Textbox" style="max-width: 400px; margin-top: 30px">
+                <article class="text-justify">Poznámka: {{ znamka.poznamka }}</article>
+            </div>
+        </div>
+
+        {% endif %}
+
+        <hr>
+
+        {% if is_granted('ROLE_ADMIN') or (is_granted('ROLE_TEACHER') and app.user.ucitel.id == znamka.ucitel.id) %}
+            <div class="btn-group">
+                <a href="{{ path('grades.edit', {id: znamka.id}) }}" class="btn btn-outline-primary btn-group">Upravit</a>
+                <a href="{{ path('grades.delete', {id: znamka.id}) }}" class="btn btn-outline-danger btn-group">Smazat</a>
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+
+{% block title %}
+    Známka
+{% endblock %}
+

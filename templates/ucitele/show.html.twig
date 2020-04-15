@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Profil Učitele
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-mt-3" style="min-width: 400px">
+
+        <h3 class="h3 card-title mb-3 font-weight-normal">Profil učitele</h3>
+
+        <hr>
+
+        <div class="d-flex justify-content-center">
+
+            {% if ucitel.image != NULL %}
+
+                <img src="{{ '/uploads/' ~ ucitel.image }}" alt="Profilový obrázek"
+                     style="max-width: 200px; max-height: 300px; margin-right: 20px">
+
+            {% endif %}
+
+
+            <div id="InfoBox">
+
+                <h4 class="h4 card-title mb-3 font-weight-normal">{{ ucitel.jmeno }} {{ ucitel.prijmeni }}</h4>
+
+                <br>
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Třídním učitelem pro: {{ ucitel.trida }}</li>
+                    <li class="list-group-item">Kancelář : {{ ucitel.ucebna }}</li>
+                    <li class="list-group-item">Telefon: {{ ucitel.telefon }}</li>
+                    <li class="list-group-item">Email: {{ ucitel.email }}</li>
+                    <li class="list-group-item">Webové stránky: {{ ucitel.web }}</li>
+                </ul>
+
+
+            </div>
+        </div>
+
+        <br>
+
+        <div class="d-flex justify-content-center">
+            <div id="Textbox" style="max-width: 400px; margin-top: 30px">
+                <article class="text-justify">{{ ucitel.poznamka }}</article>
+        </div>
+        </div>
+
+        <hr>
+        {% if is_granted('ROLE_ADMIN') %}
+        <div class="btn-group">
+            <a href="{{ path('ucitele.aedit', {id: ucitel.id}) }}" class="btn btn-outline-primary btn-group">Upravit</a>
+            <a href="{{ path('ucitele.uedit', {id: ucitel.id}) }}" class="btn btn-outline-info btn-group">Upravit</a>
+            <a href="{{ path('ucitele.delete', {id: ucitel.id}) }}" class="btn btn-outline-danger btn-group">Smazat</a>
+        </div>
+        {% endif %}
+        {% if is_granted('ROLE_TEACHER') and app.user.ucitel.id == ucitel.id %}
+            <a href="{{ path('ucitele.uedit', {id: ucitel.id}) }}" class="btn btn-outline-primary btn-group">Upravit</a>
+        {% endif %}
+    </div>
+
+{% endblock %}

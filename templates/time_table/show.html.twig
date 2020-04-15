@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Předmět
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-mt-3" style="min-width: 300px">
+
+        <h3 class="h3 card-title mb-3 font-weight-normal">Předmět</h3>
+
+        <hr>
+
+        <div class="d-flex justify-content-center">
+
+            <div id="InfoBox">
+
+                <h4 class="h4 card-title mb-3 font-weight-normal">{{ cas.predmet.nazev }}</h4>
+
+                <br>
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Učebna: {{ cas.ucebna.nazev }}</li>
+                    <li class="list-group-item">Vyučující : {{ cas.ucitel.jmeno}} {{ cas.ucitel.prijmeni }}</li>
+                    <li class="list-group-item">Od: {{ cas.doba.doba|date('H:i') }}</li>
+                    <li class="list-group-item">Třída: {{ cas.trida }}</li>
+                </ul>
+
+
+            </div>
+        </div>
+
+        <br>
+
+        <hr>
+
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEACHER') %}
+            <div class="btn-group">
+                <a href="{{ path('time_table.edit', {id: cas.id}) }}" class="btn btn-outline-primary btn-group">Upravit</a>
+                <a href="{{ path('time_table.delete', {id: cas.id}) }}" class="btn btn-outline-danger btn-group">Smazat</a>
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}

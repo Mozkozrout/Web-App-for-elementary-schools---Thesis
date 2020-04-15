@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Úpráva profilu
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-mt-3" style="min-width: 400px">
+    <h3 class="h3 card-title mb-3 font-weight-normal">{{ ucitel.jmeno }} {{ ucitel.prijmeni }}</h3>
+
+        <hr>
+        <br>
+
+    <h4 class="h4 card-title mb-3 font-weight-normal">Úprava uživatelského profilu</h4>
+        <br>
+
+    <div class="text-left">
+        {{ form_start(form, {'attr' : {'class' : 'needs-validation', 'novalidate' : true, 'style' : 'min-width: 400px'}}) }}
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Kancelář</span>
+            </div>
+            {{ form_widget(form.ucebna)}}
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Telefon</span>
+            </div>
+            {{ form_widget(form.telefon)}}
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Email</span>
+            </div>
+            {{ form_widget(form.email)}}
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Webové stránky</span>
+            </div>
+            {{ form_widget(form.web)}}
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Poznámka</span>
+            </div>
+            {{ form_widget(form.poznamka)}}
+        </div>
+
+        <br>
+
+        {{ form_widget(form.Ulozit) }}
+
+        {{ form_end(form) }}
+    </div>
+    </div>
+{% endblock %}

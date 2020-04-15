@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Známky
+{% endblock %}
+
+{% block body %}
+
+    <h2>Známky</h2>
+
+    <hr>
+
+    {{ form_start(form) }}
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            {{ form_widget(form.vyber) }}
+        </div>
+        {{ form_widget(form.rok) }}
+    </div>
+
+    {{ form_end(form) }}
+
+    <hr>
+
+    <div class="shadow" style="width: max-content;">
+        <table id="table" data-toggle="table" data-height="500"
+               class="table table-bordered table-borderless">
+            <thead class="thead-light">
+            <tr>
+                <th data-field="Predmet">Předmět</th>
+
+                {% set Max = 0 %}
+
+                {% for p in predmet %}
+                    {% set cnt = 0 %}
+                    {% for zn in p.znamka %}
+                        {% if zn.datum|date("Y") == rok %}
+                            {% set cnt = cnt + 1 %}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if cnt > Max %}
+                        {% set Max = cnt %}
+                    {% endif %}
+                    {% set cnt = 0 %}
+                {% endfor %}
+
+                {% for i in 1..Max  %}
+
+                    <th> {{ i }} </th>
+
+                {% endfor %}
+
+                <th data-field="Prumer">Průměr</th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+            {% set prum = 0 %}
+            {% set poc = 0 %}
+            {% for p in predmet %}
+                    <tr>
+                        <td style="background-color: #808080; color: #f2f2f2">{{ p.nazev }}</td>
+
+                        {% for zn in zak.znamka %}
+
+                            {% if zn.predmet == p and zn.datum|date("Y") == rok %}
+
+                                {% set prum = prum + zn.hodnota %}
+                                {% set poc = poc + 1 %}
+                                <td>
+                                    <a style="color: black" href="{{ path('grades.show', {id: zn.id}) }}">{{ zn.hodnota }}</a>
+                                </td>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                        {% for i in 0..Max - poc %}
+
+                            {% if loop.last %}
+                                {% if poc != 0 %}
+
+                                <th> {{ prum / poc}}</th>
+
+                                {% else %}
+
+                                <td>{{ prum }}</td>
+
+                                {% endif %}
+                                {% else %}
+                                <th></th>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% set prum = 0 %}
+                        {% set poc = 0 %}
+                    </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+

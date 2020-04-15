@@ -1,0 +1,147 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Žáci{% endblock %}
+
+{% block body %}
+
+    <h2>Seznamy žáků a tříd</h2>
+
+    <hr>
+
+    <div class="shadow-lg" style="min-width: 1000px">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('zak.index') }}">Seznam všech žáků</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Filtrování podle tříd</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tab-content">
+                <div id="tridy" class="card-body tab-pane active">
+
+                    <br>
+
+                    <div class="card shadow" style="margin-bottom: 10px">
+                        <div class="float-center flex-wrap btn-group">
+                            {% for t in trida %}
+
+                                <a href="{{ '#' ~ t.id }}" class="btn btn-outline-primary">{{ t.nazev }}</a>
+
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <main id="accordion">
+
+                        {% for t in trida %}
+
+                            <section id="{{ t.id }}" class="card shadow">
+                                <a href="{{ '#' ~ t.id }}" class="card-header"><h5
+                                            class="card-title h6">{{ t.nazev }}</h5></a>
+                                <div class="card-body">
+                                    <div class="shadow" style="width: max-content;">
+                                        <table id="table" data-toggle="table" data-height="500"
+                                               class="table table-bordered table-borderless table-hover">
+                                            <thead class="thead-light">
+                                            <tr>
+                                                <th data-field="ID">ID</th>
+                                                <th data-field="Jmeno">Jméno</th>
+                                                <th data-field="Prijmeni">Příjmení</th>
+                                                <th data-field="Ucebna">Učebna</th>
+                                                <th data-field="Trida">Třída</th>
+                                                <th data-field="DatNar" style="width:150px">Datum Narození</th>
+                                                <th data-field="Stat">Stát</th>
+                                                <th data-field="Mesto">Město</th>
+                                                <th data-field="Ulice">Ulice</th>
+                                                <th data-field="CisPop" style="width: 125px">Číslo popisné</th>
+                                                <th data-field="PSC">PSČ</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            {% for z in t.zak %}
+
+                                                <tr style="transform: rotate(0);">
+                                                    <td scope="colgroup"><a
+                                                                href="{{ path('zak.show', {id: z.id}) }}"
+                                                                class="stretched-link">{{ z.id }}</a></td>
+                                                    <td>
+                                                        {{ z.jmeno }}
+                                                    </td>
+                                                    <td>
+                                                        {{ z.prijmeni }}
+                                                    </td>
+                                                    <td>
+                                                        {{ z.trida.ucebna }}
+                                                    </td>
+                                                    <td>
+                                                        {{ z.trida }}
+                                                    </td>
+                                                    <td>
+                                                        {{ z.datNar|date('Y-m-d') }}
+                                                    </td>
+                                                    <td>
+                                                        {{ z.stat }}
+                                                    </td>
+                                                    <td>
+                                                        {{ z.mesto }}
+                                                    </td>
+                                                    <td>
+                                                        {{ z.ulice }}
+                                                    </td>
+                                                    <td>
+                                                        {{ z.cisPop }}
+                                                    </td>
+                                                    <td>
+                                                        {{ z.psc }}
+                                                    </td>
+                                                </tr>
+
+                                            {% endfor %}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </section>
+
+                        {% endfor %}
+
+                    </main>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <style>
+        #accordion section div {
+            display: none;
+            text-align: center;
+        }
+
+        #accordion section a {
+            text-align: center;
+            color: black;
+            text-decoration: none;
+        }
+
+        #accordion section a:hover {
+            text-decoration: none;
+        }
+
+        #accordion section:target div {
+            display: block;
+        }
+    </style>
+
+{% endblock %}

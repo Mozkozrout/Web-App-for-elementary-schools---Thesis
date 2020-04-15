@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Uživatel
+{% endblock %}
+
+
+{% block body %}
+<div class="container-mt-3" style="min-width: 400px">
+
+    <h3 class="h3 card-title mb-3 font-weight-normal">Uživatel {{ user.username }}</h3>
+
+    <hr>
+
+    <div class="d-flex justify-content-center">
+
+        <div id="InfoBox">
+
+            <h4 class="h4 card-title mb-3 font-weight-normal">Úprava uživatelského účtu</h4>
+
+            <br>
+            <div class="text-left">
+                {{ form_start(form, {'attr' : {'class' : 'needs-validation', 'novalidate' : true, 'style' : 'min-width: 400px'}}) }}
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Přihlašovací jméno</span>
+                    </div>
+                    {{ form_widget(form.username) }}
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Zašifrované heslo</span>
+                    </div>
+                    {{ form_widget(form.password) }}
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Učitel</span>
+                    </div>
+                    {{ form_widget(form.ucitel) }}
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Žák</span>
+                    </div>
+                    {{ form_widget(form.zak) }}
+                </div>
+
+                    {{ form_widget(form.roles) }}
+
+                <br>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        {{ form_widget(form.Upravit) }}
+        <a href="{{ path('user.delete', {id: user.id}) }}" class="btn btn-outline-danger">Smazat</a>
+    </div>
+
+    {{ form_end(form) }}
+
+</div>
+
+{% endblock %}

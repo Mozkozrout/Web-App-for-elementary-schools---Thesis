@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rozvrh{% endblock %}
+
+{% block body %}
+
+    <h2>Rozvrh hodin</h2>
+
+    <hr>
+
+    <div class="shadow" style="width: max-content;">
+        <table id="table" data-toggle="table" data-height="500"
+               class="table table-bordered table-borderless">
+            <thead class="thead-light">
+            <tr>
+                <th data-field="Den">Den</th>
+
+                {% for d in doba %}
+
+                    <th>{{ d.doba|date('H:i') }}</th>
+
+                {% endfor %}
+
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for den in den %}
+
+                <tr>
+                    <td style="background-color: #808080; color: #f2f2f2">
+                        {{ den.den }}
+                    </td>
+
+                    {% for d in doba %}
+                        {% set stopper = 0 %}
+                        {% for c in cas %}
+                            {% if c.doba == d and c.den == den and c.trida == tridavar %}
+                                {% set stopper = 1 %}
+                                <td style="background-color: #bfbfbf">
+                                    <a href="{{ path('time_table.show', {id: c.id}) }}"
+                                       style="color: #0d0d0d">{{ c.predmet.zkratka }}</a>
+                                </td>
+
+                            {% endif %}
+                            {% if  stopper == 0 and loop.last %}
+                                {% if not is_granted('ROLE_STUDENT') %}
+                                    <td>
+                                        <a href="{{ path('time_table.create', {denid: den.id, trid: tridavar.id, doid: d.id}) }}"
+                                           id="{{ d.id ~ den.id }}">Přidat</a>
+                                    </td>
+                                {% else %}
+                                    <td></td>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+    <hr>
+
+    {% if not is_granted('ROLE_STUDENT') %}
+        <div class="text-left">
+            {{ form_start(form) }}
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    {{ form_widget(form.save) }}
+                </div>
+                {{ form_widget(form.trida) }}
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    {% endif %}
+{% endblock %}
